@@ -1,4 +1,4 @@
-# Whack-a-LED
+# Whack-a-Mole Game
 
 A reflex arcade game for ATmega328P (Arduino UNO), written in bare-metal C without the Arduino framework.
 
