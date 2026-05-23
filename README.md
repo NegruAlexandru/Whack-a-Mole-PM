@@ -22,22 +22,6 @@ University project for **PM (Microprocessor Architectures)**, Faculty of Automat
 
 Full pinout is documented in the source comments and on the [project wiki](http://ocw.cs.pub.ro/courses/pm).
 
-## Build & Flash
-
-Requires `avr-gcc`, `avr-libc`, `avr-binutils`, and `avrdude`.
-
-```bash
-make            # compile -> whack.hex
-make flash      # flash via avrdude (Arduino bootloader, default port /dev/ttyACM0)
-make clean      # remove build artifacts
-```
-
-Override port if needed:
-
-```bash
-make flash PORT=/dev/ttyUSB0
-```
-
 ## Features
 
 - 3-state FSM (idle / playing / game over)
@@ -51,10 +35,6 @@ make flash PORT=/dev/ttyUSB0
 - EEPROM-persisted high score, displayed as `HIGH` in idle
 - Auto-return to idle after 5s of inactivity
 - Special fanfare on new high score
-
-## Binary size
-
-`text: 4832 + data: 120 + bss: 30 = 4982 bytes` — about 15% of the 32 KB flash on ATmega328P.
 
 ## License
 
