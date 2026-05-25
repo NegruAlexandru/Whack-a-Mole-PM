@@ -16,7 +16,7 @@
 #define LED_DDR   DDRD
 static const uint8_t led_bits[4] = {2, 3, 4, 5};
 
-#define BTN_PIN   PINC 
+#define BTN_PIN   PINC
 #define BTN_PORT  PORTC
 #define BTN_DDR   DDRC
 static const uint8_t btn_bits[4] = {0, 1, 2, 3};
@@ -231,9 +231,9 @@ static int8_t get_pressed_button(void) {
 //          GAME PARAMETERS
 // =====================================================================
 #define REACTION_TIME_EASY        500
-#define REACTION_TIME_HARD        1500
-#define TIME_DECREASE_PER_POINT   5
-#define MIN_REACTION_TIME         600
+#define REACTION_TIME_HARD        1000
+#define TIME_DECREASE_PER_LEVEL   20
+#define MIN_REACTION_TIME         300
 #define POST_HIT_DELAY            200
 #define SCORE_ROLL_DURATION_MS    180
 #define SCORE_ROLL_BIG_MS         320
@@ -659,10 +659,14 @@ static void pick_next_led(void) {
   activeLedIndex = newIdx;
   SET_BIT(LED_PORT, led_bits[activeLedIndex]);
 
+  // Difficulty steps once per level, not once per hit.
+  // level = hitCount / HITS_PER_LEVEL, so the window is constant within a level
+  // and drops by TIME_DECREASE_PER_LEVEL exactly when a new level begins.
   uint16_t potValue = adc_read(4);
   int32_t reactionTime = REACTION_TIME_EASY +
        ((int32_t)(REACTION_TIME_HARD - REACTION_TIME_EASY) * (int32_t)potValue) / 1023;
-  reactionTime -= (int32_t)hitCount * TIME_DECREASE_PER_POINT;
+  int32_t level = (int32_t)hitCount / HITS_PER_LEVEL;
+  reactionTime -= level * TIME_DECREASE_PER_LEVEL;
   if (reactionTime < MIN_REACTION_TIME) reactionTime = MIN_REACTION_TIME;
 
   ledOnTime     = millis();
